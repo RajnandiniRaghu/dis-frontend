@@ -1,7 +1,10 @@
-
+<ng-container *ngIf="userType != 'head' ">
   <div class="d-flex justify-content-between">
-  <button class="btn btn-danger btnWidth" data-toggle="modal" data-target="#booksEditModal" (click)="initForm()" ><i class="fa fa-plus-circle fa-fw fa-lg" aria-hidden="true"></i>Add Book</button>
-  <mat-paginator #paginator 
+  <button class="btn btn-reset" data-toggle="modal" data-target="#booksAddModal" (click)="initForm()" ><i class="fa fa-plus-circle fa-fw fa-lg" aria-hidden="true"></i>Add Book</button>
+  <button class="btn btn-reset" data-toggle="modal" data-target="#booksIssueModal" (click)="initForm()" ><i class="fa fa-minus-circle fa-fw fa-lg" aria-hidden="true"></i>Issue Book</button>
+  <button class="btn btn-reset" data-toggle="modal" data-target="#booksReturnModal" (click)="initForm()" ><i class="fa fa-plus-circle fa-fw fa-lg" aria-hidden="true"></i>Return Book</button>
+ 
+  <mat-paginator #paginator turn
   [length]="length"
   [pageIndex]="0"
   [pageSize]="25"
@@ -18,8 +21,8 @@
   
     <!-- Name Column -->
     <ng-container matColumnDef="Book name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Book name </th>
-      <td mat-cell *matCellDef="let element"> {{element.bookName}} </td>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Title </th>
+      <td mat-cell *matCellDef="let element"> {{element.title}} </td>
     </ng-container>
   
     <!-- Weight Column -->
@@ -41,66 +44,77 @@
    
     
   </table>
-  <div class="modal fade" id="booksEditModal" tabindex="-1" role="dialog" aria-labelledby="booksEditModalLabel" aria-hidden="true">
+  <div class="modal fade" id="booksAddModal" tabindex="-1" role="dialog" aria-labelledby="booksAddModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="booksEditModalLabel">Booking</h5>
+        <h5 class="modal-title" id="booksAddModalLabel">Add Book</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form  #bookForm="ngForm">
+        <form >
           <div class="form-row">
-            <div class="col">
-              <label>Book name</label>
-              <input type="text" class="form-control" name="bookName" ngModel>
+            <div class="col-4">
+              <label>ISBN no.</label>
+              <input type="text" class="form-control" name="isbnNo" ngModel>
+            </div> 
+            <div class="col-4">
+              <label>Author Name</label>
+              <input type="text" class="form-control" name="authorName" ngModel>
             </div>
-            <div class="col">
-              <label>Author</label>
-              <input type="text" class="form-control" name="author" ngModel>
+            <div class="col-4">
+              <label>Title</label>
+              <input type="text" class="form-control" name="title" ngModel>
             </div>
           </div><br/>
           <div class="form-row">
             <div class="col-4">
-              <label>Serial no.</label>
-              <input type="text" class="form-control" name="serialNo" ngModel>
+              <label>Publisher</label>
+              <input type="text" class="form-control" name="publisher" ngModel>
             </div>
             <div class="col-4">
-              <label>Registered on</label>
-              <input type="date" class="form-control" name="registeredOn" ngModel>
+              <label>Edition</label>
+              <input type="text" class="form-control" name="edition" ngModel>
             </div>
             <div class="col-4">
-              <label>Book no.</label>
-              <input type="text" class="form-control" name="bookNo" ngModel>
+              <label>Publication Year</label>
+              <input type="date" class="form-control" name="yearPublication" ngModel>
             </div>
           </div><br/>
           <div class="form-row">
-            <div class="col">
-              <label>Type</label>
-              <input type="text" class="form-control" name="type" ngModel>
+              <div class="col-4">
+                  <label>Price</label>
+                  <input type="text" class="form-control" name="price" ngModel>
+                </div>
+            
+            <div class="col-4">
+              <label>no. of Pages</label>
+              <input type="text" class="form-control" name="noOfPages" ngModel>
             </div>
-            <div class="col">
-              <label>Status</label>
-              <input type="text" class="form-control" name="status" ngModel>
-            </div>
-            <div class="col">
-              <label>Version</label>
-              <input type="text" class="form-control" name="version" ngModel>
-            </div>
+            <div class="col-4">
+                <label>Subject Category</label>
+                <input type="text" class="form-control" name="subjectCategory" ngModel>
+              </div>
           </div><br/>
-          <div class="form-group">
-            <label>Remarks</label>
-            <textarea class="form-control" name="remarks" ngModel></textarea>
+          <div class="form-row">
+              <div class="col-4">
+                  <label>Date of Purchase</label>
+                  <input type="date" class="form-control" name="registeredOn" ngModel>
+                </div>
+                <div class="col-8">
+                    <label>Remarks</label>
+                    <textarea class="form-control" name="remarks" ngModel></textarea>
+                </div>
           </div>
           <div *ngIf="edit" class="d-flex justify-content-center mt-3">
             <button type="reset" class="btn btn-danger mr-3 btnWidth">Reset</button>
-            <button type="submit" class="btn btn-success btnWidth" (click)="editBook(bookForm)">Update</button>
+            <button type="submit" class="btn btn-success btnWidth" >Update</button>
           </div>
           <div *ngIf="!edit" class="d-flex justify-content-center mt-3">
             <button type="reset" class="btn btn-danger mr-3 btnWidth">Reset</button>
-            <button type="submit" class="btn btn-success btnWidth" (click)="addBook(bookForm)">Add</button>
+            <button type="submit" class="btn btn-success btnWidth" >Add</button>
           </div>
         </form>
       </div>
@@ -108,4 +122,111 @@
     </div>
   </div>
 </div>
+
+ 
+<div class="modal fade" id="booksIssueModal" tabindex="-1" role="dialog" aria-labelledby="booksIssueModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="booksIssueModalLabel">Issue Book</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form  >
+            <div class="form-row">
+              <div class="col-4">
+                <input type="text" required placeholder="Enter Enrollment No. or Faculty Name" class="form-control" name="enrollmentno" ngModel>
+              </div> 
+              
+              <div class="col-">
+                  <button type="submit" class="btn btn-success btnWidth" >Check Limit</button>
+
+              </div>
+              
+              
   
+            </div><br/>
+            <div class="form-row">
+              <div class="col-4">
+                <label>Title</label>
+                <input type="text" class="form-control" name="title" ngModel>
+              </div>
+              <div class="col-4">
+                <label>Edition</label>
+                <input type="text" class="form-control" name="edition" ngModel>
+              </div>
+              <div class="col-4">
+                <label>Author Name</label>
+                <input type="text" class="form-control" name="authorName" ngModel>
+              </div>
+            </div><br/>
+            <div *ngIf="edit" class="d-flex justify-content-center mt-3">
+              <button type="reset" class="btn btn-danger mr-3 btnWidth">Reset</button>
+              <button type="submit" class="btn btn-success btnWidth" >Update</button>
+            </div>
+            <div *ngIf="!edit" class="d-flex justify-content-center mt-3">
+              <button type="reset" class="btn btn-danger mr-3 btnWidth">Reset</button>
+              <button type="submit" class="btn btn-success btnWidth" >Issue</button>
+            </div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="booksReturnModal" tabindex="-1" role="dialog" aria-labelledby="booksReturnModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="booksReturnModalLabel">Return Book</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+             <form  >
+                <div class="form-row"> 
+                    <div class="col-4">
+                      <input type="text" class="form-control" placeholder="Enter Enrollment No. or faculty name" name="enrollmentno" ngModel>
+                    </div> 
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-success btnWidth" >Show Details</button>
+                    </div>
+                </div>
+              <div class="container">
+                  <table class="table table-striped">
+
+                      <tr>
+                        
+                          <th >S. No.</th>
+                      
+                          <th >Title</th>
+                      
+                          <th >Author </th>
+                      
+                          <th >Penalty</th>
+                      
+                          <th ></th>
+                      </tr>     
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>                       
+                     </table>
+              </div>
+    
+                                      
+            </form>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    </ng-container>
